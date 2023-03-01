@@ -1,0 +1,78 @@
+<div class="no-print">
+  <div class="container">
+    <div *ngFor="let q of quads" class="quad">
+      <div *ngFor="let i of q">
+        <div
+          [ngClass]="[
+            checkifmark(i, res) ? 'mark' : '',
+            checkifmark(i, result) ? 'red' : ''
+          ]"
+          class="cell"
+          (click)="addRemoveNumber(i)"
+          id="b{{ i }}"
+        >
+          {{ i }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box">
+    <span>Resultado</span>
+    <textarea
+      id="result"
+      [value]="userresult"
+      (input)="userresult = $event.target.value"
+      (change)="updateRes()"
+    ></textarea>
+  </div>
+  <div class="box">
+    <span>Aposta</span>
+    <textarea
+      id="num"
+      [value]="userbet"
+      (input)="userbet = $event.target.value"
+      (change)="newbet()"
+    ></textarea>
+    <button id="btn-add" class="button is-info" (click)="addChoice()">+</button>
+  </div>
+  <div class="statistics">
+    <span
+      >No resultado anterior: {{ totalCompared }} [{{ hits.toString() }}]</span
+    >
+    <span *ngIf="attempts > 0">Tentativas: {{ attempts }}</span>
+    <span>q1: {{ pq }}</span>
+    <span>q2: {{ sq }}</span>
+    <span>q3: {{ tq }}</span>
+    <span>q4: {{ qq }}</span>
+    <span>Total: {{ total }}</span>
+    <span>Mirror?: {{ mirrorBet }}</span>
+    <span *ngIf="res.length < 50" class="warning">Aposta incompleta!</span>
+  </div>
+  <div>
+    <button class="button is-primary" (click)="generatenewbet()">Novo</button>
+    <button class="button is-info" (click)="complete()">Completar</button>
+    <button class="button is-danger" *ngIf="res.length > 0" (click)="clear()">
+      Limpar
+    </button>
+    <button class="button" *ngIf="res.length == 50" (click)="mirror()">
+      Espelho
+    </button>
+    <button
+      class="button is-warning"
+      *ngIf="result.length == 20"
+      (click)="simulate()"
+    >
+      Simular
+    </button>
+  </div>
+</div>
+<div id="choosen" *ngIf="userChoices.length">
+  <div class="output">
+    <div class="small">
+      <p>Apostas: {{ userChoices.length }}</p>
+    </div>
+    <div *ngFor="let bet of userChoices; let i = index">
+      <div class="small" (click)="removeChoice(i)">{{ bet }}</div>
+    </div>
+  </div>
+</div>
